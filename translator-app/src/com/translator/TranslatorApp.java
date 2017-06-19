@@ -14,7 +14,7 @@ import java.awt.event.KeyListener;
  */
 public class TranslatorApp {
 
-    private static final String translate ="Translate";
+    private static final String translate ="Translate to Spanish";
     public static String title = "Translator Application";
     public static String inputLabel ="Please enter the input in English";
     public static String heading ="Translator Application";
@@ -24,6 +24,7 @@ public class TranslatorApp {
     private static String reset="Reset";
     private static String[]  inputEnglishArray = {"Dog", "Cat", "Chicken", "Head", "Hand", "Foot"};
     private static String[] outputSpanishhArray = {"Perro", "Gato", "Pollo", "Cabeza", "Mano", "Pie"};
+    private static String emptyString="";
     //String[] imageArray = {"Perro", "Gato", "Pollo", "Cabeza", "Mano", "Pie"};
 
     public static void main(String[] args) {
@@ -66,6 +67,7 @@ public class TranslatorApp {
 
             ClickAction clickAction = new ClickAction();
             convert.addActionListener(clickAction);
+            reset.addActionListener(clickAction);
 
             spanishPanel = new JPanel(new FlowLayout());
 
@@ -156,6 +158,14 @@ public class TranslatorApp {
 
                         }
                     }
+                }else if(e.getSource() == reset){
+
+                    spanishLabel.setText(TranslatorApp.emptyString);
+                    inputTextField.setText(TranslatorApp.defaultInput);
+                    searchcrieteriaPanel.revalidate();
+                    searchcrieteriaPanel.repaint();
+                    inputTextField.revalidate();
+                    inputTextField.repaint();
                 }
 
 
