@@ -1,13 +1,9 @@
 package com.translator;
 
-import com.sun.javafx.binding.FloatConstant;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Created by z001qgd on 6/18/17.
@@ -16,17 +12,19 @@ public class TranslatorApp {
 
     private static final String translate ="Translate to Spanish";
     public static String title = "Translator Application";
-    public static String inputLabel ="Please enter the input in English";
+    public static String inputLabel ="Please enter the input in English : ";
     public static String heading ="Translator Application";
     private static String defaultInput="Enter some input";
     private static String enterValidString="Please enter some valid input";
-    private static String invalidInput="Invalid Input";
+    private static String errorMessage =" is not a valid Input! ";
     private static String reset="Reset";
     private static String[]  inputEnglishArray = {"Dog", "Cat", "Chicken", "Head", "Hand", "Foot"};
     private static String[] outputSpanishhArray = {"Perro", "Gato", "Pollo", "Cabeza", "Mano", "Pie"};
     private static String[] imageArray = {"/src/com/translator/images/Dog.jpg","/src/com/translator/images/Cat.jpg",
                                             "/src/com/translator/images/Chicken.png","/src/com/translator/images/Head.jpg"
                                             ,"/src/com/translator/images/Hand.jpg","/src/com/translator/images/Foot.jpeg" }   ;
+
+    private static String errorImageLocation =  "/src/com/translator/images/no-Results.jpeg";
     private static String emptyString="";
     private static String resetScreen="Please reset before searching for a new value.";
 
@@ -176,8 +174,8 @@ public class TranslatorApp {
                         }
                     }
 
-                    if(!valuePresent){
-                            invalidInputValidation(TranslatorApp.enterValidString);
+                    if(!valuePresent && !imagePresentinScreen){
+                            invalidErrorScreen(enteredValue, TranslatorApp.errorMessage);
                     }
                 }else if(e.getSource() == reset){
 
@@ -200,12 +198,27 @@ public class TranslatorApp {
 
             }
 
+            /**
+             * This method prints the message and image in the search results for an invalid input.
+             * @param invalidInput
+             */
+            private void invalidErrorScreen(String invalidInput, String errorMessage) {
+
+                spanishLabel = new JLabel("*"+invalidInput+"*".concat(errorMessage) );
+                spanishLabel.setFont(new Font("Serif", Font.BOLD, 40));
+                searchcrieteriaPanel.add(spanishLabel);
+                searchcrieteriaPanel.add(displayImage(errorImageLocation));
+                searchcrieteriaPanel.revalidate();
+                searchcrieteriaPanel.repaint();
+                imagePresentinScreen=true;
+
+            }
+
             private JLabel displayImage(String location) {
 
 
                     //selectImage = new ImageIcon("/Dilip/College-Assignments/Vannesa/codebase/translator-app/src/com/translator/Chicken.png");
                 String path = System.getProperty("user.dir").concat(location);
-                System.out.println("Path is : " + path);
                 selectImage = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
                 diplayImageLabel = new JLabel("",selectImage,JLabel.CENTER);
 
@@ -222,7 +235,7 @@ public class TranslatorApp {
                     JOptionPane.showMessageDialog
                             (warning,
                                     enteredString,
-                                    TranslatorApp.invalidInput,
+                                    TranslatorApp.errorMessage,
                                     JOptionPane.ERROR_MESSAGE
                             );
             }
