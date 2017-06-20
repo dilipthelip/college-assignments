@@ -19,13 +19,16 @@ public class TranslatorApp {
     public static String inputLabel ="Please enter the input in English";
     public static String heading ="Translator Application";
     private static String defaultInput="Enter some input";
-    private static String enterValidString="Please enter some input";
+    private static String enterValidString="Please enter some valid input";
     private static String invalidInput="Invalid Input";
     private static String reset="Reset";
     private static String[]  inputEnglishArray = {"Dog", "Cat", "Chicken", "Head", "Hand", "Foot"};
     private static String[] outputSpanishhArray = {"Perro", "Gato", "Pollo", "Cabeza", "Mano", "Pie"};
+    private static String[] imageArray = {"/src/com/translator/images/Dog.jpg","/src/com/translator/images/Cat.jpg",
+                                            "/src/com/translator/images/Chicken.png","/src/com/translator/images/Head.jpg"
+                                            ,"/src/com/translator/images/Hand.jpg","/src/com/translator/images/Foot.jpeg" }   ;
     private static String emptyString="";
-    //String[] imageArray = {"Perro", "Gato", "Pollo", "Cabeza", "Mano", "Pie"};
+    private static String resetScreen="Please reset before searching for a new value.";
 
     public static void main(String[] args) {
 
@@ -45,15 +48,18 @@ public class TranslatorApp {
         JPanel gridPanel = new JPanel(new GridLayout(1,4));
         JPanel searchcrieteriaPanel = new JPanel(new FlowLayout());
         JPanel spanishPanel;
-        ImageIcon image;
-        private JLabel imageLabel,imageLabel3,inputTextLabel,spanishLabel;
+        ImageIcon image,selectImage;
+        private JLabel imageLabel,imageLabel3,inputTextLabel,spanishLabel,diplayImageLabel;
         private JTextField inputTextField;
         private JButton convert,reset;
+
+        boolean imagePresentinScreen=false;
 
 
         TranslatorFrame(){
 
             image = new ImageIcon("image.jpeg");
+
 
             /**
              * Page Heading
@@ -114,7 +120,7 @@ public class TranslatorApp {
         private JLabel pageHeading() {
 
             JLabel  welcomeTranslatorLabel = new JLabel();
-            welcomeTranslatorLabel.setText("<html><FONT SIZE=14>"+TranslatorApplication.heading+"</FONT></html>");
+            welcomeTranslatorLabel.setText("<html><FONT SIZE=14>"+TranslatorApp.heading+"</FONT></html>");
             welcomeTranslatorLabel.setOpaque(true);
             welcomeTranslatorLabel.setBackground(Color.WHITE);
             welcomeTranslatorLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -130,6 +136,7 @@ public class TranslatorApp {
         private class ClickAction implements  ActionListener {
 
             String enteredValue;
+            boolean valuePresent;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -137,8 +144,12 @@ public class TranslatorApp {
 
                 if(e.getSource()==convert){
 
+                    if(imagePresentinScreen){
+                          invalidInputValidation(TranslatorApp.resetScreen);
+                    }
+
                     enteredValue=inputTextField.getText();
-                    invalidInputValidation(enteredValue);
+
 
                     int position=-1;
 
@@ -146,30 +157,59 @@ public class TranslatorApp {
 
                         position =position+1;
 
-                        if(s.equals(enteredValue)){
+                        if(s.equals(enteredValue) && !imagePresentinScreen){
 
                             String spanishOutput = "Spanish Equivalent is : " +  outputSpanishhArray[position];
 
                             spanishLabel = new JLabel(spanishOutput );
                             spanishLabel.setFont(new Font("Serif", Font.BOLD, 30));
+
+                            String imageOutput = imageArray[position];
+
                             searchcrieteriaPanel.add(spanishLabel);
+                            searchcrieteriaPanel.add(displayImage(imageOutput));
+                            imagePresentinScreen = true;
                             searchcrieteriaPanel.revalidate();
                             searchcrieteriaPanel.repaint();
-
+                            valuePresent=true;
+                            break;
                         }
+                    }
+
+                    if(!valuePresent){
+                            invalidInputValidation(TranslatorApp.enterValidString);
                     }
                 }else if(e.getSource() == reset){
 
                     spanishLabel.setText(TranslatorApp.emptyString);
                     inputTextField.setText(TranslatorApp.defaultInput);
+                    
+                    /**
+                     * Reseting the image
+                     */
+                    selectImage = new ImageIcon();
+                    diplayImageLabel.setIcon(selectImage);
+
+                    imagePresentinScreen=false;
+                    valuePresent=false;
                     searchcrieteriaPanel.revalidate();
                     searchcrieteriaPanel.repaint();
                     inputTextField.revalidate();
                     inputTextField.repaint();
                 }
 
+            }
+
+            private JLabel displayImage(String location) {
 
 
+                    //selectImage = new ImageIcon("/Dilip/College-Assignments/Vannesa/codebase/translator-app/src/com/translator/Chicken.png");
+                String path = System.getProperty("user.dir").concat(location);
+                System.out.println("Path is : " + path);
+                selectImage = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
+                diplayImageLabel = new JLabel("",selectImage,JLabel.CENTER);
+
+                    return  diplayImageLabel;
             }
 
             /**
@@ -178,15 +218,13 @@ public class TranslatorApp {
              */
             private void invalidInputValidation(String enteredString) {
 
-                if(TranslatorApp.defaultInput.endsWith(enteredString)){
                     JPanel warning=new JPanel();
                     JOptionPane.showMessageDialog
                             (warning,
-                                    TranslatorApp.enterValidString,
+                                    enteredString,
                                     TranslatorApp.invalidInput,
                                     JOptionPane.ERROR_MESSAGE
                             );
-                }
             }
 
         }
