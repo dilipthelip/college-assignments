@@ -34,7 +34,7 @@ public class TranslatorApp {
 
         frame.setTitle(title);
         frame.setSize(800, 800);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -181,7 +181,7 @@ public class TranslatorApp {
 
                     spanishLabel.setText(TranslatorApp.emptyString);
                     inputTextField.setText(TranslatorApp.defaultInput);
-                    
+
                     /**
                      * Reseting the image
                      */
