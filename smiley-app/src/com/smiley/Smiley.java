@@ -13,7 +13,7 @@ public class Smiley extends JPanel implements ActionListener{
     public Graphics graphics1;
     Color faceColor;
     int width, height;
-    int eyeWhichFeel; //1 = original, 2=wink
+    int eyeWhichFeel; //1 = original, 2=wink,3=eyeclose
     int eyeColor; //1 = blue, 2=black,3=yellow
     int smileWhichFeel; //1=original, 2=frown,3=Thinking smile
 
@@ -57,11 +57,10 @@ public class Smiley extends JPanel implements ActionListener{
         }
 
         if(eyeWhichFeel ==1){ //normal smile
-
-
             graphics.fillOval(70,50,30,50);
         }else if (eyeWhichFeel ==2){ //wink
-
+            graphics.fillRect(50,75,50,5);
+        }else if (eyeWhichFeel ==3){ //close
             graphics.fillRect(50,75,50,5);
         }
 
@@ -72,8 +71,12 @@ public class Smiley extends JPanel implements ActionListener{
         }else if (eyeColor==3){
             graphics.setColor(Color.yellow);
         }
+        if (eyeWhichFeel ==3){ //close
+            graphics.fillRect(130,75,50,5);
+        }else{
+            graphics.fillOval(130,50,30,50);
+        }
 
-        graphics.fillOval(130,50,30,50);
 
         /**
          * Mouth
@@ -121,8 +124,8 @@ public class Smiley extends JPanel implements ActionListener{
         this.paintComponent(this.graphics1);
     }
 
-    public void defaultToOriginal(Graphics graphics) {
-        this.setColor(Color.YELLOW);
+    public void defaultToOriginal(Graphics graphics, Color black) {
+        this.setColor(black);
         this.eyeColor=1;
         this.eyeWhichFeel=1;
         this.smileWhichFeel=1;
@@ -134,5 +137,12 @@ public class Smiley extends JPanel implements ActionListener{
         this.smileWhichFeel=2;
         this.graphics1=graphics;
         this.paintComponent(this.graphics1);
+    }
+
+    public void closeBothEyes(Graphics graphics) {
+        this.eyeWhichFeel=3;
+        this.graphics1=graphics;
+        this.paintComponent(this.graphics1);
+
     }
 }

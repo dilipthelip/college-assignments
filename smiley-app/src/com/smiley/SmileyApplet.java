@@ -20,9 +20,12 @@ public class SmileyApplet extends JApplet implements ActionListener {
     private static  String yellowFaceColor="Smiley Face Color to Yellow!";
     String greenFaceColor="Smiley Face Color to Green!";;
     private static  String resetToOriginal = "Reset to Original";
+    private static  String closeBothEyes = "Close Both Eyes";
 
     public void init(){
         setSize(950,400);
+        //getRootPane()
+        getParent().setVisible(true);
 
         Scrollbar scrollbar = new Scrollbar(Scrollbar.HORIZONTAL, 50, 0, 0, 100);
 
@@ -52,21 +55,25 @@ public class SmileyApplet extends JApplet implements ActionListener {
         smiley2ComboBox = new JComboBox(smiley2Options);
 
 
-        String [] smiley3Options = {original,greenFaceColor,wink,frown,eyeColorToBlack};
+
+        String [] smiley3Options = {original,greenFaceColor,closeBothEyes,frown,eyeColorToBlack};
         smiley3ComboBox = new JComboBox(smiley3Options);
 
         setLayout(new FlowLayout());
 
+        add(new JLabel("1:"));
         add(smiley1ComboBox);
+        add(new JLabel("2:"));
         add(smiley2ComboBox);
+        add(new JLabel("3:"));
         add(smiley3ComboBox);
         add(smiley1);
         add(smiley2);
         add(smiley3);
         addComboBoxActionListener();
 
-
     }
+
 
     private void addComboBoxActionListener() {
 
@@ -101,23 +108,23 @@ public class SmileyApplet extends JApplet implements ActionListener {
             smiley3.repaint();
             smiley3.revalidate();
         }else if(selectedValue.equals(frown)){
-            smiley3.frown(smiley2.graphics1);
+            smiley3.frown(smiley3.graphics1);
             smiley3.repaint();
             smiley3.revalidate();
         }
-        else if(selectedValue.equals(wink)){
-            smiley3.wink(smiley2.graphics1);
+        else if(selectedValue.equals(closeBothEyes)){
+            smiley3.closeBothEyes(smiley3.graphics1);
             smiley3.repaint();
             smiley3.revalidate();
         }
         else if(selectedValue.equals(eyeColorToBlack)){
-            smiley3.eyeColorToBlack(smiley2.graphics1);
+            smiley3.eyeColorToBlack(smiley3.graphics1);
             smiley3.repaint();
             smiley3.revalidate();
         }
 
         else if(selectedValue.equals(original)){
-            smiley3.defaultToOriginal(smiley2.graphics1);
+            smiley3.defaultToOriginal(smiley3.graphics1,Color.BLACK);
             smiley3.repaint();
             smiley3.revalidate();
         }
@@ -150,7 +157,7 @@ public class SmileyApplet extends JApplet implements ActionListener {
         }
 
         else if(selectedValue.equals(original)){
-            smiley2.defaultToOriginal(smiley2.graphics1);
+            smiley2.defaultToOriginal(smiley2.graphics1, Color.ORANGE);
             smiley2.repaint();
             smiley2.revalidate();
         }
@@ -184,7 +191,7 @@ public class SmileyApplet extends JApplet implements ActionListener {
         }
 
         else if(selectedValue.equals(original)){
-            smiley1.defaultToOriginal(smiley1.graphics1);
+            smiley1.defaultToOriginal(smiley1.graphics1, Color.YELLOW);
             smiley1.repaint();
             smiley1.revalidate();
         }
